@@ -9,65 +9,102 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 from sklearn.datasets import make_classification
+from sklearn.metrics import accuracy_score, classification_report
+from yellowbrick.classifier import ConfusionMatrix
+from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 
-#ler inputs
-inputs = pd.read_csv('inputs.csv')
+#ler dados
+data = pd.read_csv('inputs.csv')
 
-print(inputs)
-print(inputs.describe())
+#ver os parametros dos dados
+print(data.describe())
 
-#quantidade de targets negativos e positivos
-print(np.unique(inputs['targets'], return_counts = True))
+#separando inputs e targets
+inputs = data.iloc[:,0:10].values
+targets = data.iloc[:,10].values
 
-
-plt.hist(x=inputs['A'])
-
-#diminua!!!!
-grafico = px.scatter_matrix(inputs, dimensions=['A','B','C'], color = 'targets')
-grafico.show()
-
-x_inputs = inputs.iloc[:,0:10].values
-y_inputs = inputs.iloc[:,10].values
-
-
-print('esse daqui',x_inputs)
-print(y_inputs)
-
+#escalonando os inputs para ficarem com valores equivalentes
 sc = StandardScaler()
-x_inputs = sc.fit_transform(x_inputs)
+inputs = sc.fit_transform(inputs)
 
+#setando treinamento e teste
+inputs_train, inputs_test, targets_train, targets_test  = train_test_split(inputs, targets, test_size= 0.3, random_state= 1)
 
-x_inputs_train, x_inputs_test, y_inputs_train, y_inputs_test = train_test_split(x_inputs, y_inputs, test_size= 0.25, random_state= 1)
-
-print(x_inputs_train.shape)
-print( y_inputs_train.shape)
-print(x_inputs_test.shape, y_inputs_test.shape)
-
-X, Y = make_classification(n_samples= 250, n_features=10, n_informative=8, n_redundant=0, n_repeated=0, n_classes= 2, random_state=14)
-
-print(X.shape)
+#analisar tamanho dos dados
+print(inputs_train.shape, targets_train.shape)
+print(inputs_test.shape, targets_test.shape )
 
 error1 = []
 error2 = []
 
+#descobrindo o melhor "k" para o algoritmo
+
 for k in range(1,15):
     knn = KNeighborsClassifier(n_neighbors=k)
-    knn.fit(x_inputs_train, y_inputs_train)
-    y_pred1 = knn.predict(x_inputs_train)
-    error1.append(np.mean(y_inputs_train!=y_pred1))
-    y_pred2 = knn.predict(x_inputs_test)
-    error2.append(np.mean(y_inputs_test!=y_pred2))
-plt.figure(figsize=(18,8))
+    knn.fit(inputs_train, targets_train)
+    y_pred1 = knn.predict(inputs_train)
+    error1.append(np.mean(targets_train!=y_pred1))
+    y_pred2 = knn.predict(inputs_test)
+    error2.append(np.mean(targets_test!=y_pred2))
+plt.figure(1, figsize=(18,8))
 plt.plot(range(1,15), error1, label = 'train')
 plt.plot(range(1,15), error2, label = 'test')
 plt.xlabel('k values')
 plt.ylabel('Error')
+plt.title('Econtrar "K"')
 plt.legend()
 
 
+#Realiza as definições do knn
+X, Y = make_classification(n_samples= 250, n_features=10, n_informative=8, n_redundant=0, n_repeated=0, n_classes= 2, random_state=14)
+
+#--------------------------------------Algoritmo--------------------------------
+#fazendo o classificador do algoritmo KNN
 knn = KNeighborsClassifier(n_neighbors = 10)
-knn.fit(x_inputs_train, y_inputs_train)
-y_pred = knn.predict(x_inputs_test)
-print(metrics.accuracy_score(y_inputs_test,y_pred))
+
+#treinando o algoritmo
+knn.fit(inputs_train, targets_train)
+
+#realizando as previsoes
+previsoes = knn.predict(inputs_test)
+
+#Acuracia
+print('Acuracia do KNN: ', metrics.accuracy_score(targets_test,previsoes))
+
+#--------------------------------------!/Algoritmo/!--------------------------------
+
+#matris de confusão
+plt.figure(2)
+plt.title('KNN')
+cm = ConfusionMatrix(knn)
+cm.fit(inputs_train, targets_train)
+cm.score(inputs_test, targets_test)
+
+#--------------------------------------Algoritmo--------------------------------
+#treinar arvore de decisão
+DecisionTree = DecisionTreeClassifier(random_state=0)
+DecisionTree.fit(inputs_train, targets_train)
+
+#previsões
+previsoes = DecisionTree.predict(inputs_test)
+
+#acuracia
+accuracy = accuracy_score(targets_test, previsoes)
+print('Acuracia da decision tree: ', accuracy)
+
+#matris de confusão
+plt.figure(3)
+plt.title('Decision Tree')
+cm = ConfusionMatrix(DecisionTree)
+cm.fit(inputs_train, targets_train)
+cm.score(inputs_test, targets_test)
+
+#dados de precisão
+print(classification_report(targets_test, previsoes))
+
+
+
+
 
 plt.show()

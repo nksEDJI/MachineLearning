@@ -1,3 +1,4 @@
+from tkinter import W
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -6,68 +7,90 @@ import seaborn as sns
 import plotly.express as px
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn import metrics
-from sklearn.datasets import make_classification
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, classification_report
+from yellowbrick.classifier import ConfusionMatrix
+from sklearn import tree
 
-#ler inputs
-inputs = pd.read_csv('D:\Machine Learning\At3\inputs.csv')
 
-print(inputs)
-print(inputs.describe())
+#ler dados
+WaterDistribuition = pd.read_csv('WaterDistribuition.csv')
+
+#descrição dos dados
+print(WaterDistribuition.describe())
 
 #quantidade de targets negativos e positivos
-print(np.unique(inputs['Targets'], return_counts = True))
+print(np.unique(WaterDistribuition['Targets'], return_counts = True))
+
+#encontrar dados faltantes
+print(WaterDistribuition.isnull().sum())
+
+#ver os dados faltantes
+print(WaterDistribuition.loc[pd.isnull(WaterDistribuition ['pH'])])
+
+#preenchendo os dados faltantes com a media
+
+WaterDistribuition['WaterTemperature'].fillna(WaterDistribuition['WaterTemperature'].mean(), inplace = True)
+WaterDistribuition['CIO2_1'].fillna(WaterDistribuition['CIO2_1'].mean(), inplace = True)
+WaterDistribuition['pH'].fillna(WaterDistribuition['pH'].mean(), inplace = True)
+WaterDistribuition['Redox'].fillna(WaterDistribuition['Redox'].mean(), inplace = True)
+WaterDistribuition['electro-conductividade'].fillna(WaterDistribuition['electro-conductividade'].mean(), inplace = True)
+WaterDistribuition['turbiedade'].fillna(WaterDistribuition['turbiedade'].mean(), inplace = True)
+WaterDistribuition['CIO2_2'].fillna(WaterDistribuition['CIO2_2'].mean(), inplace = True)
+WaterDistribuition['FlowRate1'].fillna(WaterDistribuition['FlowRate1'].mean(), inplace = True)
+WaterDistribuition['FlowRate2'].fillna(WaterDistribuition['FlowRate2'].mean(), inplace = True)
+print(WaterDistribuition)
 
 
-plt.hist(x=inputs['pH'])
-
-#diminua!!!!
-grafico = px.scatter_matrix(inputs, dimensions=['CIO2_1','CIO2_2','FlowRate1', 'FlwRate2'], color = 'Targets')
-grafico.show()
-
-x_inputs = inputs.iloc[:,0:9].values
-y_inputs = inputs.iloc[:,9].values
+#confirmar dados faltantes preenchidos
+print(WaterDistribuition.isnull().sum())
 
 
-#print(x_inputs)
-#print(y_inputs)
 
+#denominando inputs e targets
+inputs = WaterDistribuition.iloc[:,0:9].values
+targets = WaterDistribuition.iloc[:,9].values
+
+#escalonando dados
 sc = StandardScaler()
-x_inputs = sc.fit_transform(x_inputs)
+inputs = sc.fit_transform(inputs)
 
 
-x_inputs_train, x_inputs_test, y_inputs_train, y_inputs_test = train_test_split(x_inputs, y_inputs, test_size= 0.25, random_state= 1)
-
-print(x_inputs_train.shape)
-print( y_inputs_train.shape)
-print(x_inputs_test.shape, y_inputs_test.shape)
-
-X, Y = make_classification(n_samples= 69783, n_features=9, n_informative=8, n_redundant=0, n_repeated=0, n_classes= 2, random_state=14)
-
-print(X.shape)
-
-error1 = []
-error2 = []
-
-for k in range(1,15):
-    knn = KNeighborsClassifier(n_neighbors=k)
-    knn.fit(x_inputs_train, y_inputs_train)
-    y_pred1 = knn.predict(x_inputs_train)
-    error1.append(np.mean(y_inputs_train!=y_pred1))
-    y_pred2 = knn.predict(x_inputs_test)
-    error2.append(np.mean(y_inputs_test!=y_pred2))
-plt.figure(figsize=(18,8))
-plt.plot(range(1,15), error1, label = 'train')
-plt.plot(range(1,15), error2, label = 'test')
-plt.xlabel('k values')
-plt.ylabel('Error')
-plt.legend()
+#setando treino e teste
+inputs_train, inputs_test, targets_train, targets_test  = train_test_split(inputs, targets, test_size= 0.3, random_state= 1)
 
 
-knn = KNeighborsClassifier(n_neighbors = 10)
-knn.fit(x_inputs_train, y_inputs_train)
-y_pred = knn.predict(x_inputs_test)
-print(metrics.accuracy_score(y_inputs_test,y_pred))
+#analisar tamanho dos dados
+print(inputs_train.shape, targets_train.shape)
+print(inputs_test.shape, targets_test.shape )
+
+#treinar arvore de decisão
+DecisionTree = DecisionTreeClassifier(random_state=0)
+DecisionTree.fit(inputs_train, targets_train)
+
+#previsões
+previsoes = DecisionTree.predict(inputs_test)
+print(previsoes)
+
+#acuracia
+accuracy = accuracy_score(targets_test, previsoes)
+print(accuracy)
+
+#matris de confusão
+plt.figure(1)
+cm = ConfusionMatrix(DecisionTree)
+cm.fit(inputs_train, targets_train)
+cm.score(inputs_test, targets_test)
+
+#dados de precisão
+print(classification_report(targets_test, previsoes))
+
+#mostrando
+plt.figure(2)
+tree.plot_tree(DecisionTree)
+previsores = ['WaterTemperature', 'CIO2_1', 'pH', 'pH', 'electro-conductividade', 'turbiedade', 'CIO2_2', 'FlowRate1', 'FlowRate2']
+fig, axes = plt.subplots(nrows = 1,ncols = 1, figsize = (20,20))
+tree.plot_tree(DecisionTree, feature_names = previsoes, class_names=['0','1'], filled=True)
+
 
 plt.show()
