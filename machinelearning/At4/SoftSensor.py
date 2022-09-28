@@ -1,4 +1,8 @@
 import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import plotly.express as px
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_multilabel_classification
@@ -7,53 +11,44 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.linear_model import LinearRegression
-
-#Masculino = 1, Feminino = 0
-
-
-#Lendo o arquivo
-data_read = pd.read_csv('ChildrenData.csv')
+#ler dados
+SoftSensor = pd.read_csv('behavior.csv')
 
 #Retirando os dados que não serão usados
-PropofolAdministration = data_read.drop(columns= ['Unnamed: 10','Unnamed: 11','Unnamed: 12','Unnamed: 13','Unnamed: 14','Unnamed: 15',]) #retira dados errados
+SoftSensor = SoftSensor.drop(columns= ['Unnamed: 7','Unnamed: 8','Unnamed: 9'])
 
 #descrição dos dados
-data_read.describe() #ve a descrição de tudo que tem nos dados
+SoftSensor.describe()
 
-#definindo inputs e targets
-inputs = data_read.iloc[0:46,6:10].values #pega todos os valores das colunas 6 a 9 para usar como inputs para treinamento e teste, utilizando o ".iloc" para selecionar os dados e o '.values' para pegar seus valores
-targets = data_read.iloc[0:46,1:6].values #pega todos os valores da coluna 1 a 5 para usar como targets de resposta para o treinamento e teste
+#denominando inputs e targets
+inputs = SoftSensor.iloc[:,0:5].values
+targets = SoftSensor.iloc[:,5:7].values
 
+#escalonando dados
+inputs = StandardScaler().fit_transform(inputs)
 
-#escalonando os inputs para ficarem com valores equivalentes
-inputs = StandardScaler().fit_transform(inputs) #transforma todos os valores dos inputs para numeros equivalente em decimais com o ".fit_transorm", o que aumenta a acertividade
-
-#setando treinamento e teste
-inputs_train, inputs_test, targets_train, targets_test  = train_test_split(inputs, targets, test_size= 0.5, random_state= 1)
-#ao utilizar o 'train_test_split' o comando retorna os valores de treino e teste separando igualmente e aleatoriamente a quantidade de dados para treino e para teste
+#setando treino e teste
+inputs_train, inputs_test, targets_train, targets_test  = train_test_split(inputs, targets, test_size= 0.3, random_state= 1)
 
 #analisar tamanho dos dados
-inputs_train.shape, targets_train.shape
-inputs_test.shape, targets_test.shape
+print(inputs_train.shape, targets_train.shape)
+print(inputs_test.shape, targets_test.shape )
 
 #-------------------------------Decision Tree----------------------------#
 #Realizando a regressão
-TreeRegressor = DecisionTreeRegressor() #realiza a regressão dos dados pela arvore de decisão
+TreeRegressor = DecisionTreeRegressor()
 
 #Treinando
-TreeRegressor.fit(inputs_train, targets_train) #treina os dados de treinamento pelo medelo de regressão por arvore de decisões
+TreeRegressor.fit(inputs_train, targets_train)
 
 #Pontuação
-print("pontuação decision tree: ", TreeRegressor.score(inputs_test, targets_test)) #faz a pontuação comparando os valores de teste
+print("pontuação Decision Tree: ",TreeRegressor.score(inputs_test, targets_test))
 
 #Previsoes
-DecisionTree_previsoes = TreeRegressor.predict(inputs_test) #faz a previsão das respostas de target para os inpus de teste
+DecisionTree_previsoes = TreeRegressor.predict(inputs_test)
 
 #erro absoluto medio (MAE)
-print("MAE decision tree: ",mean_absolute_error(targets_test, DecisionTree_previsoes)) #calcula o erro absoluto medio comparando as previsões com os targets de teste
-
-#-------------------------------!/Decision Tree/!----------------------------#
-
+print("MAE Decision Tree: ",mean_absolute_error(targets_test, DecisionTree_previsoes))
 
 #-------------------------------Random Forest----------------------------#
 #Regressão
@@ -87,5 +82,7 @@ simple_regressor_predict = simpe_regressor.predict(inputs_test)
 
 #erro absoluto medio (MAE)
 print("MAE regressão linear simples: ",mean_absolute_error(targets_test, simple_regressor_predict)) #calcula o erro absoluto medio comparando as previsões com os targets de teste
+
+
 
 

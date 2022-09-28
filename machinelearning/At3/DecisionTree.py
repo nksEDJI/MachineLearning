@@ -17,16 +17,16 @@ from sklearn import tree
 WaterDistribuition = pd.read_csv('WaterDistribuition.csv')
 
 #descrição dos dados
-print(WaterDistribuition.describe())
+WaterDistribuition.describe()
 
 #quantidade de targets negativos e positivos
-print(np.unique(WaterDistribuition['Targets'], return_counts = True))
+np.unique(WaterDistribuition['Targets'], return_counts = True)
 
 #encontrar dados faltantes
-print(WaterDistribuition.isnull().sum())
+WaterDistribuition.isnull().sum()
 
 #ver os dados faltantes
-print(WaterDistribuition.loc[pd.isnull(WaterDistribuition ['pH'])])
+WaterDistribuition.loc[pd.isnull(WaterDistribuition ['pH'])]
 
 #preenchendo os dados faltantes com a media
 
@@ -39,11 +39,11 @@ WaterDistribuition['turbiedade'].fillna(WaterDistribuition['turbiedade'].mean(),
 WaterDistribuition['CIO2_2'].fillna(WaterDistribuition['CIO2_2'].mean(), inplace = True)
 WaterDistribuition['FlowRate1'].fillna(WaterDistribuition['FlowRate1'].mean(), inplace = True)
 WaterDistribuition['FlowRate2'].fillna(WaterDistribuition['FlowRate2'].mean(), inplace = True)
-print(WaterDistribuition)
+
 
 
 #confirmar dados faltantes preenchidos
-print(WaterDistribuition.isnull().sum())
+WaterDistribuition.isnull().sum()
 
 
 
@@ -70,14 +70,14 @@ DecisionTree.fit(inputs_train, targets_train)
 
 #previsões
 previsoes = DecisionTree.predict(inputs_test)
-print(previsoes)
 
 #acuracia
 accuracy = accuracy_score(targets_test, previsoes)
-print(accuracy)
+print("Acuracia decision tree: ",accuracy)
 
 #matris de confusão
 plt.figure(1)
+plt.title('Decision Tree')
 cm = ConfusionMatrix(DecisionTree)
 cm.fit(inputs_train, targets_train)
 cm.score(inputs_test, targets_test)
@@ -86,11 +86,11 @@ cm.score(inputs_test, targets_test)
 print(classification_report(targets_test, previsoes))
 
 #mostrando
-plt.figure(2)
+'''plt.figure(2)
 tree.plot_tree(DecisionTree)
 previsores = ['WaterTemperature', 'CIO2_1', 'pH', 'pH', 'electro-conductividade', 'turbiedade', 'CIO2_2', 'FlowRate1', 'FlowRate2']
 fig, axes = plt.subplots(nrows = 1,ncols = 1, figsize = (20,20))
-tree.plot_tree(DecisionTree, feature_names = previsoes, class_names=['0','1'], filled=True)
+tree.plot_tree(DecisionTree, feature_names = previsoes, class_names=['0','1'], filled=True)'''
 
 
 plt.show()
