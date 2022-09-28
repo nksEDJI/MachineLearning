@@ -1,0 +1,66 @@
+1- primeiro devemos fazer a leitura dos dados em csv, para termos nossa base de dados de trabalho
+ex:
+data_read = pd.read_csv('inputs.csv')
+
+2- em seguida devemos analisar todos os dados, vendo quantidade de dados, valores minimos, maximo e medios ded variaveis com o .describe
+ex:
+data_read.describe()
+
+3- em seguida precisamos separar as variaveis que vao para inputs(entradas) e targets(saidas ou dados que queremos)
+usando o .iloc a gente seleciona as variaveis sendo o comando repartido em iloc[linhas,colunas], colocamos o .values para ele pegar os valores da nossa base 
+de dados
+ex:
+inputs = data_read.iloc[:,0:10].values 
+targets = data_read.iloc[:,10].values 
+
+4- Após isso, precisamos escalonar os dados de entrada(inputs), para que todos as variaveis sejam equivalentes entre si
+isso é realizado por uma biblioteca, chamando o StandardScaler() e dando um fit_transform para mudar todas os dados para escalonados
+ex:
+inputs = StandardScaler().fit_transform(inputs) 
+
+5- Após o escalonamento, devemos separar a porcentagem de dados que vai para treinamento e para teste
+o comando train_test_split realiza a separação sozinha, é apenas necessario colocar os inputs, targets, a porcentagem que voce quer por exemplo
+se queremos trabalhar em um modelo 70% treino 30% teste, devemos colocar o test_size de 0.3
+além disso devemos sempre dar um valor ao random_state, o valor pode ser aleatorio, porém se n tiver um valor, toda vez que rodar o codigo as respostas
+vão ser diferentes
+Seguindo a linha, as variaveis para o comando mandar para nós os valores é: inputs para treinamento, inputs para teste, targets para treinamento e targets para teste
+ex:
+inputs_train, inputs_test, targets_train, targets_test  = train_test_split(inputs, targets, test_size= 0.3, random_state= 1)
+
+6- O proximo passo é ver o tamanho que ficou os dados de inputs e targets para teste e treinamento, assim é possivel ver qual algoritmo sera utlizado
+por exemplo, se vemos que temos multiplas entradas e uma unica saida, vulgo um MISO, podemos utilizar os algoritmos padrões(tabém funciona para 1 unica entrada)
+por outro lado, se vemos que temos multiplas saidas, é necessario um algoritmo de regressão
+ex:
+inputs_train.shape, targets_train.shape 
+inputs_test.shape, targets_test.shape
+
+7- Em seguida podemos utilizar o algoritmo, e ele é repartido em 3 partes:
+7.1 - Treinamento: A primeira coisa a ser feita, é o treinamento, onde vamos treinar nosso algorimtmo com os nossos dados separados para treino
+isso vai deixar ele preparado para nossos testes e para isso usamos o método por exemplo DecisionTreeRegressor() e o .fit com entradas de inputs e targets de treino
+lembrando que o .fit é o comando de treino
+ex:
+DecisionTreeRegressor().fit(inputs_train, targets_train)
+
+7.2 - Pontuação: A segunda coisa a se fazer, é ver a pontuação do algoritmo para nossa base de dados e ver se ele é adequado ou não
+para isso usamos o método(DecisionTreeRegressor()) e o .score, que vai nos dar a pontuação entre os testes de entrada e testes de saida
+ex:
+DecisionTreeRegressor().score(inputs_test, targets_test)
+
+7.3 - Previsões: Por ultimo devemos realizar a nossa previsão, para isso usamos o metodo(DecisionTreeRegressor()) e o comando .predict com a variavel de inputs de teste
+para assim termos as previsões de saida, vulgo nossos targets
+ex:
+previsoes = DecisionTree.predict(inputs_test)
+
+8- Acuracia/erro: Por ultimo, mas não menos importante, devemos ver nossa acuracia(para algoritmos padrões) e nosso erro(para algoritmos de regressão)
+Para a acuracia, dentro da lib metrics, temos o comando accuracy_score, que nos da a pontuação entre -1 a 1 sendo 1, 100% de precisão e 0, 0% de precisão
+fazemos isso comparando os valores de previsão com os targets para teste
+ex:
+metrics.accuracy_score(targets_test,previsoes)
+
+Para o erro, o proprio python ja tem os comandos, podemos usar o MAE(Média absoluta do erro), MSE(Media quadratica do erro) e o MAPE(Media absoluta percentual do erro)
+para isso só colocar o comando que queremos e comparar nossos targets de teste com a nossa previsão
+ex:
+mean_absolute_error(targets_test, DecisionTree_previsoes)
+
+9- frufru: Após terminarmos tudo, podemos ralizar graficos, matriz de confusão etc.
+Isso só aumenta a visibilidade porém não tem influencia alguma
