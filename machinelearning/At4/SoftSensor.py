@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.linear_model import LinearRegression
 #ler dados
-SoftSensor = pd.read_csv('behavior.csv')
+SoftSensor = pd.read_csv('Behavior.csv')
 
 #Retirando os dados que não serão usados
 SoftSensor = SoftSensor.drop(columns= ['Unnamed: 7','Unnamed: 8','Unnamed: 9'])
@@ -83,6 +83,30 @@ simple_regressor_predict = LinearRegression().fit(inputs_train, targets_train).p
 #erro absoluto medio (MAE)
 print("MAE regressão linear simples: ",mean_absolute_error(targets_test, simple_regressor_predict)) #calcula o erro absoluto medio comparando as previsões com os targets de teste
 
+#plot Td
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(targets_test[0:25,0], label = 'Targets', color = 'red')
+plt.plot(DecisionTree_previsoes[0:25,0], label = 'Decision Tree', color = 'black')
+plt.plot(RandomForest_previsoes[0:25,0], label = 'Random Forest', color = 'yellow')
+plt.title("hot - previsões X teste", fontsize=18)
+plt.ylabel('Temperatura', fontsize=18)
+plt.legend()
 
+#plot k
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(targets_test[0:25,1], label = 'Targets', color = 'red')
+plt.plot(DecisionTree_previsoes[0:25,1], label = 'Decision Tree', color = 'black')
+plt.plot(RandomForest_previsoes[0:25,1], label = 'Random Forest', color = 'yellow')
+
+plt.title("rad - previsões X teste", fontsize=18)
+plt.ylabel('Temperatura', fontsize=18)
+plt.legend()
+
+
+plt.show()
 
 
