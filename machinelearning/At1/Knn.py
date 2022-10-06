@@ -45,12 +45,14 @@ for k in range(1,15): #utilizamos um for de 15 variaveis para testar o "k" do kn
     y_pred2 = knn.predict(inputs_test)           #faz a previsão para os dados de teste
     error2.append(np.mean(targets_test!=y_pred2))   #mostra o valor do err entre a previsão de teste e os targets de teste
     #realiza a plotagem do grafico
-plt.figure(1, figsize=(18,8))
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
 plt.plot(range(1,15), error1, label = 'train')
 plt.plot(range(1,15), error2, label = 'test')
-plt.xlabel('k values')
-plt.ylabel('Error')
-plt.title('Econtrar "K"')
+plt.xlabel('k values', fontsize=18)
+plt.ylabel('Error', fontsize=18)
+plt.title('Econtrar "K"', fontsize = 18)
 plt.legend()
 
 
@@ -65,6 +67,7 @@ knn = KNeighborsClassifier(n_neighbors = 10) #utilizando a biblioteca do algorit
 #treinando o algoritmo
 knn.fit(inputs_train, targets_train) #com o ".fit" realizamos o treinamento, com X sendo os inputs de treinamento e Y os targets de treinamento
 
+print("pontuação knn: ", knn.score(inputs_test, targets_test))
 #realizando as previsoes
 previsoes = knn.predict(inputs_test) #com o ".predict" fazemos as previsões com os inputs de teste
 

@@ -72,13 +72,13 @@ print("MAE random forest: ", mean_absolute_error(targets_test, RandomForest_prev
 #-------------------------------Regressão linear simples----------------------------#
 #treinamento
 simpe_regressor = LinearRegression()
-simpe_regressor.fit(inputs_train, targets_train)
+LinearRegression().fit(inputs_train, targets_train)
 
 #pontuação
-print("pontuação regressão linear simples: ",simpe_regressor.score(inputs_test, targets_test))
+print("pontuação regressão linear simples: ",LinearRegression().fit(inputs_train, targets_train).score(inputs_test, targets_test))
 
 #previsões
-simple_regressor_predict = simpe_regressor.predict(inputs_test)
+simple_regressor_predict = LinearRegression().fit(inputs_train, targets_train).predict(inputs_test)
 
 #erro absoluto medio (MAE)
 print("MAE regressão linear simples: ",mean_absolute_error(targets_test, simple_regressor_predict)) #calcula o erro absoluto medio comparando as previsões com os targets de teste

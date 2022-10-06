@@ -7,6 +7,8 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+import plotly.express as px
 
 #Masculino = 1, Feminino = 0
 
@@ -88,4 +90,70 @@ simple_regressor_predict = simpe_regressor.predict(inputs_test)
 #erro absoluto medio (MAE)
 print("MAE regressão linear simples: ",mean_absolute_error(targets_test, simple_regressor_predict)) #calcula o erro absoluto medio comparando as previsões com os targets de teste
 
+#plot Td
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(simple_regressor_predict[:,0], label = 'Regressão simples')
+plt.plot(DecisionTree_previsoes[:,0], label = 'Decision Tree')
+plt.plot(RandomForest_previsoes[:,0], label = 'Random Forest')
+plt.plot(targets_test[:,0], label = 'Targets')
+plt.title("Td - previsões X teste", fontsize=18)
+plt.xlabel('Paciente', fontsize=18)
+plt.ylabel('Valor', fontsize=18)
+plt.legend()
 
+#plot k
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(simple_regressor_predict[:,1], label = 'Regressão simples')
+plt.plot(DecisionTree_previsoes[:,1], label = 'Decision Tree')
+plt.plot(RandomForest_previsoes[:,1], label = 'Random Forest')
+plt.plot(targets_test[:,1], label = 'Targets')
+plt.title("K - previsões X teste", fontsize=18)
+plt.xlabel('Paciente', fontsize=18)
+plt.ylabel('Valor', fontsize=18)
+plt.legend()
+
+#plot E_50
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(simple_regressor_predict[:,2], label = 'Regressão simples')
+plt.plot(DecisionTree_previsoes[:,2], label = 'Decision Tree')
+plt.plot(RandomForest_previsoes[:,2], label = 'Random Forest')
+plt.plot(targets_test[:,2], label = 'Targets')
+plt.title("E_50 - previsões X teste", fontsize=18)
+plt.xlabel('Paciente', fontsize=18)
+plt.ylabel('Valor', fontsize=18)
+plt.legend()
+
+#plot E_0
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(simple_regressor_predict[:,3], label = 'Regressão simples')
+plt.plot(DecisionTree_previsoes[:,3], label = 'Decision Tree')
+plt.plot(RandomForest_previsoes[:,3], label = 'Random Forest')
+plt.plot(targets_test[:,3], label = 'Targets')
+plt.title("E_0 - previsões X teste", fontsize=18)
+plt.xlabel('Paciente', fontsize=18)
+plt.ylabel('Valor', fontsize=18)
+plt.legend()
+
+#plot Gamma
+fig, ax = plt.subplots(figsize=(16, 8))
+for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	label.set_fontsize(20)
+plt.plot(simple_regressor_predict[:,4], label = 'Regressão simples')
+plt.plot(DecisionTree_previsoes[:,4], label = 'Decision Tree')
+plt.plot(RandomForest_previsoes[:,4], label = 'Random Forest')
+plt.plot(targets_test[:,4], label = 'Targets')
+plt.title("Gamma - previsões X teste", fontsize=18)
+plt.xlabel('Paciente', fontsize=18)
+plt.ylabel('Valor', fontsize=18)
+plt.legend()
+
+
+plt.show()
