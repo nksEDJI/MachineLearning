@@ -101,7 +101,8 @@ plt.plot(targets_test[:,0], label = 'Targets')
 plt.title("Td - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
-plt.legend()
+plt.legend(fontsize=18)
+plt.savefig('1')
 
 #plot k
 fig, ax = plt.subplots(figsize=(16, 8))
@@ -114,8 +115,8 @@ plt.plot(targets_test[:,1], label = 'Targets')
 plt.title("K - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
-plt.legend()
-
+plt.legend(fontsize=18)
+plt.savefig('2')
 #plot E_50
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -127,8 +128,8 @@ plt.plot(targets_test[:,2], label = 'Targets')
 plt.title("E_50 - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
-plt.legend()
-
+plt.legend(fontsize=18)
+plt.savefig('3')
 #plot E_0
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -140,8 +141,8 @@ plt.plot(targets_test[:,3], label = 'Targets')
 plt.title("E_0 - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
-plt.legend()
-
+plt.legend(fontsize=18)
+plt.savefig('4')
 #plot Gamma
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -153,7 +154,7 @@ plt.plot(targets_test[:,4], label = 'Targets')
 plt.title("Gamma - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
-plt.legend()
-
+plt.legend(fontsize=18)
+plt.savefig('5')
 
 plt.show()

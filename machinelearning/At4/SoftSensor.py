@@ -92,8 +92,8 @@ plt.plot(DecisionTree_previsoes[0:25,0], label = 'Decision Tree', color = 'black
 plt.plot(RandomForest_previsoes[0:25,0], label = 'Random Forest', color = 'yellow')
 plt.title("hot - previsões X teste", fontsize=18)
 plt.ylabel('Temperatura', fontsize=18)
-plt.legend()
-
+plt.legend(fontsize=18)
+plt.savefig('6')
 #plot k
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -101,10 +101,10 @@ for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 plt.plot(targets_test[0:25,1], label = 'Targets', color = 'red')
 plt.plot(DecisionTree_previsoes[0:25,1], label = 'Decision Tree', color = 'black')
 plt.plot(RandomForest_previsoes[0:25,1], label = 'Random Forest', color = 'yellow')
-
 plt.title("rad - previsões X teste", fontsize=18)
 plt.ylabel('Temperatura', fontsize=18)
-plt.legend()
+plt.legend(fontsize=18)
+plt.savefig('7')
 
 
 plt.show()
