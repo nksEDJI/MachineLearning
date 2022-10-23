@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 from sklearn.preprocessing import StandardScaler
@@ -18,8 +17,8 @@ SoftSensor = pd.read_csv('Behavior.csv')
 SoftSensor = SoftSensor.drop(columns= ['Unnamed: 7','Unnamed: 8','Unnamed: 9'])
 
 #descrição dos dados
-SoftSensor.describe()
-
+print(SoftSensor.describe())
+print(SoftSensor.head(25))
 #denominando inputs e targets
 inputs = SoftSensor.iloc[:,0:5].values
 targets = SoftSensor.iloc[:,5:7].values
@@ -93,7 +92,7 @@ plt.plot(RandomForest_previsoes[0:25,0], label = 'Random Forest', color = 'yello
 plt.title("hot - previsões X teste", fontsize=18)
 plt.ylabel('Temperatura', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('6')
+
 #plot k
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -104,7 +103,7 @@ plt.plot(RandomForest_previsoes[0:25,1], label = 'Random Forest', color = 'yello
 plt.title("rad - previsões X teste", fontsize=18)
 plt.ylabel('Temperatura', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('7')
+
 
 
 plt.show()

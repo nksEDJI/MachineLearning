@@ -34,6 +34,51 @@ WaterDistribuition['CIO2_2'].fillna(WaterDistribuition['CIO2_2'].mean(), inplace
 WaterDistribuition['FlowRate1'].fillna(WaterDistribuition['FlowRate1'].mean(), inplace = True)
 WaterDistribuition['FlowRate2'].fillna(WaterDistribuition['FlowRate2'].mean(), inplace = True)
 
+plt.figure(6)
+plt.hist(x = WaterDistribuition['WaterTemperature'])
+plt.title('WaterTemperature')
+
+plt.figure(7)
+plt.hist(x = WaterDistribuition['CIO2_1'])
+plt.title('CIO2_1')
+
+plt.figure(8)
+plt.hist(x = WaterDistribuition['pH'])
+plt.title('pH')
+
+plt.figure(9)
+plt.hist(x = WaterDistribuition['Redox'])
+plt.title('Redox')
+
+plt.figure(10)
+plt.hist(x = WaterDistribuition['electro-conductividade'])
+plt.title('electro-conductividade')
+
+plt.figure(11)
+plt.hist(x = WaterDistribuition['turbiedade'])
+plt.title('turbiedade')
+
+plt.figure(12)
+plt.hist(x = WaterDistribuition['CIO2_2'])
+plt.title('CIO2_2')
+
+plt.figure(13)
+plt.hist(x = WaterDistribuition['FlowRate1'])
+plt.title('FlowRate1')
+
+plt.figure(14)
+plt.hist(x = WaterDistribuition['FlowRate2'])
+plt.title('FlowRate2')
+
+
+#graficamente mostra os valores em formato iris
+grafico = px.scatter_matrix(WaterDistribuition, dimensions=['WaterTemperature', 'CIO2_1', 'pH','Redox','electro-conductividade','turbiedade','CIO2_2','FlowRate1','FlowRate2',], color = 'Targets') 
+#color diferencia os True dos False
+
+#show() em uma variavel
+grafico.show()
+
+
 
 print(WaterDistribuition.describe())
 #denominando inputs e targets
@@ -43,7 +88,6 @@ print(inputs.shape)
 print(targets.shape)
 #escalonando dados
 inputs = StandardScaler().fit_transform(inputs)
-
 
 #setando treino e teste
 inputs_train, inputs_test, targets_train, targets_test  = train_test_split(inputs, targets, test_size= 0.3, random_state= 1)
@@ -78,7 +122,7 @@ cm.score(inputs_test, targets_test)
 #dados de precisão
 print(classification_report(targets_test, previsoes))
 #------------------------------Random forest---------------------#
-random_forest_classifier = RandomForestClassifier(random_state = 0, n_estimators=100)
+random_forest_classifier = RandomForestClassifier(random_state = 0, n_estimators=10)
 random_forest_classifier.fit(inputs_train, targets_train)
 previsoes2 = random_forest_classifier.predict(inputs_test)
 accuracy1 = accuracy_score(targets_test, previsoes2)

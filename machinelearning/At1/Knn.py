@@ -13,7 +13,7 @@ from sklearn.tree import DecisionTreeClassifier
 data_read = pd.read_csv('inputs.csv')
 
 #ver os parametros dos dados
-data_read.describe()
+print(data_read.describe())
 
 #separando inputs e targets
 inputs = data_read.iloc[:,0:10].values #pega todos os valores das colunas 0 a 9 para usar como inputs para treinamento e teste, utilizando o ".iloc" para selecionar os dados e o '.values' para pegar seus valores

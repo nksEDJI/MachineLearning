@@ -20,7 +20,7 @@ data_read = pd.read_csv('ChildrenData.csv')
 PropofolAdministration = data_read.drop(columns= ['Unnamed: 10','Unnamed: 11','Unnamed: 12','Unnamed: 13','Unnamed: 14','Unnamed: 15',]) #retira dados errados
 
 #descrição dos dados
-data_read.describe() #ve a descrição de tudo que tem nos dados
+print(data_read.describe()) #ve a descrição de tudo que tem nos dados
 
 #definindo inputs e targets
 inputs = data_read.iloc[0:46,6:10].values #pega todos os valores das colunas 6 a 9 para usar como inputs para treinamento e teste, utilizando o ".iloc" para selecionar os dados e o '.values' para pegar seus valores
@@ -102,7 +102,7 @@ plt.title("Td - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('1')
+
 
 #plot k
 fig, ax = plt.subplots(figsize=(16, 8))
@@ -116,7 +116,7 @@ plt.title("K - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('2')
+
 #plot E_50
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -129,7 +129,7 @@ plt.title("E_50 - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('3')
+
 #plot E_0
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -142,7 +142,7 @@ plt.title("E_0 - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('4')
+
 #plot Gamma
 fig, ax = plt.subplots(figsize=(16, 8))
 for label in (ax.get_xticklabels() + ax.get_yticklabels()):
@@ -155,6 +155,6 @@ plt.title("Gamma - previsões X teste", fontsize=18)
 plt.xlabel('Paciente', fontsize=18)
 plt.ylabel('Valor', fontsize=18)
 plt.legend(fontsize=18)
-plt.savefig('5')
+
 
 plt.show()
