@@ -15,11 +15,9 @@ print(file[0])
 for i in file:
     print(i)
     df = pd.read_csv(i, sep = '\t')
-    df = pd.DataFrame(i,
-                      columns =['var1', 'var2','var3', 'var3', 'var3', 'var3', 'var3', 'var3', 'var3'])
-    
+#tirar os valores como se fossem variaveis
 
-    print(df.reset_index())    
+    print(df)    
 
     break
 
